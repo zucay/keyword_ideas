@@ -1,0 +1,20 @@
+---
+:authentication:
+  :method: OAuth2
+  :oauth2_client_id:
+  :oauth2_client_secret:
+  :developer_token:
+  :client_customer_id:
+  :user_agent: INSERT_YOUR_USER_AGENT_HERE
+  :oauth2_token:
+    :access_token:
+    :refresh_token:
+    :issued_at:
+    :expires_in:
+    :id_token: 
+:service:
+  :environment: PRODUCTION
+:connection:
+  :enable_gzip: false
+:library:
+  :log_level: INFO
