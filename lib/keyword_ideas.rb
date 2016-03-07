@@ -17,7 +17,7 @@ class Search
   end
 
   def related_volumes(keyword, opts = {})
-    opts[:depth] ||= 3
+    opts[:depth] ||= 2
 
     next_search_keywords = [keyword] # 再帰的に次に検索するためのワード一次保存変数
     keyword_texts = [] # 累計で調べ済みのワード
@@ -94,11 +94,11 @@ class Search
     begin
       # p "#{selector[:search_parameters][0][:queries]} offset: #{offset}"
       page = invoke_api(selector)
-      results = page[:entries] if page and page[:entries]
+      results += page[:entries] if page and page[:entries]
       offset += PAGE_SIZE
       selector[:paging][:start_index] = offset
     end while offset < page[:total_num_entries]
-    results
+    results.uniq
   end
 
   def invoke_api(selector)
