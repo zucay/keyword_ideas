@@ -25,8 +25,7 @@ class Search
     (1..opts[:depth]).each do |i|
       p next_search_keywords
       break if next_search_keywords.empty?
-      results = execute(related_selector(next_search_keywords, opts))
-      next_search_keywords.clear
+      results = execute(related_selector(next_search_keywords.shift(50), opts))
       results.map do |result|
         next_search_keywords << result[:data]['KEYWORD_TEXT'][:value] unless keyword_texts.include?(result[:data]['KEYWORD_TEXT'][:value])
         keyword_texts << result[:data]['KEYWORD_TEXT'][:value]
@@ -107,6 +106,7 @@ class Search
       page = service.get(selector)
     rescue => e
       #binding.pry
+      p e
       fail_count +1
       sleep(30 + (4 * fail_count * fail_count))
       if fail_count < 3
