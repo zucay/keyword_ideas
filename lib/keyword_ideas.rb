@@ -16,25 +16,36 @@ class Search
     end
   end
 
-  def related_volumes(keyword, opts = {})
+  def related_volumes(search_word, opts = {})
     opts[:depth] ||= 2
+    opts[:split] ||= false
 
-    next_search_keywords = [keyword] # 再帰的に次に検索するためのワード一次保存変数
-    keyword_texts = [] # 累計で調べ済みのワード
-    volumes = []
+    next_search_queries = [search_word] # 再帰的に次に検索するためのワード一次保存変数
+    queries = [] # 累計で調べ済みのワード
+    query_volumes = []
     (1..opts[:depth]).each do |i|
       p next_search_keywords
       break if next_search_keywords.empty?
-      results = execute(related_selector(next_search_keywords.shift(50), opts))
+      results = execute(related_selector(next_search_queries.shift(50), opts))
       results.map do |result|
-        next_search_keywords << result[:data]['KEYWORD_TEXT'][:value] unless keyword_texts.include?(result[:data]['KEYWORD_TEXT'][:value])
-        keyword_texts << result[:data]['KEYWORD_TEXT'][:value]
-        arr = [result[:data]['KEYWORD_TEXT'][:value], result[:data]['SEARCH_VOLUME'][:value]]
-        # p arr
-        volumes << arr
+        query = result[:data]['KEYWORD_TEXT'][:value].to_s
+        volume = result[:data]['SEARCH_VOLUME'][:value]
+        # p [query, volume]
+        query_volumes << [query, volume]
+
+        if opts[:split]
+          words = query.split(' ')
+        else
+          words = [query]
+        end
+        words.each do |word|
+          next_search_queries <<  word unless queries.include?(word)
+          queries << word
+        end
+
       end
     end
-    volumes.uniq
+    query_volumes.uniq
   end
 
   private

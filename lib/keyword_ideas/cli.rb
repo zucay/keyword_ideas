@@ -8,8 +8,8 @@ module KeywordIdeas
     end
 
     desc 'related', 'explore related words from seed'
-    def related(word)
-      arr = KeywordIdeas::Search.new.related_volumes(word)
+    def related(word, opts={})
+      arr = KeywordIdeas::Search.new.related_volumes(word, opts)
       File.open("#{word}_related_keywords.txt", 'w') do |fo|
         arr.each do |row|
           row = row.join("\t") if row.kind_of? Array
@@ -24,6 +24,11 @@ module KeywordIdeas
       File.open(file).each do |line|
         related(line.chomp)
       end
+    end
+
+    desc 'wide_related', 'explore related words from seed'
+    def wide_related(word)
+      related(word, split: true, depth: 3)
     end
   end
 end
