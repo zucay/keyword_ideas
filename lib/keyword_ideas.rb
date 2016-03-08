@@ -24,8 +24,8 @@ class Search
     queries = [] # 累計で調べ済みのワード
     query_volumes = []
     (1..opts[:depth]).each do |i|
-      p next_search_keywords
-      break if next_search_keywords.empty?
+      p next_search_queries
+      break if next_search_queries.empty?
       results = execute(related_selector(next_search_queries.shift(50), opts))
       results.map do |result|
         query = result[:data]['KEYWORD_TEXT'][:value].to_s
