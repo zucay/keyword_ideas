@@ -17,7 +17,7 @@ class Search
   end
 
   def related_volumes(search_word, opts = {})
-    opts[:depth] ||= 2
+    opts[:depth] ||= 1
     opts[:split] ||= false
 
     next_search_queries = [search_word] # 再帰的に次に検索するためのワード一次保存変数
@@ -45,7 +45,7 @@ class Search
 
       end
     end
-    query_volumes.uniq
+    query_volumes.sort {|a, b| b[1] <=> a[1]}.uniq
   end
 
   private
