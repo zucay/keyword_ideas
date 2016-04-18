@@ -1,7 +1,7 @@
 require 'keyword_ideas/version'
 require 'keyword_ideas/cli'
 require 'adwords_api'
-require 'pry'
+
 module KeywordIdeas
 class Search
   PAGE_SIZE = 100
