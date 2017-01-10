@@ -1,10 +1,18 @@
 require 'thor'
+require 'pry'
 
 module KeywordIdeas
   class CLI < Thor
     desc 'volumes', 'estimate search volumes from keywords'
-    def volume(words)
-      puts KeywordIdeas::Search.new.related_volumes(words)
+    def volumes(words)
+      puts KeywordIdeas::Search.new.volumes(words)
+    end
+
+    desc 'volumes_from_file', 'estimate search volumes from keywords'
+    def volumes_from_file(file)
+      binding.pry
+      whole_words = File.open(file).map(&:chomp)
+
     end
 
     desc 'related', 'explore related words from seed'
